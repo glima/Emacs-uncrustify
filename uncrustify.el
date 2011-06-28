@@ -58,16 +58,16 @@
 
 (defcustom uncrustify-args ""
  "Additional arguments to pass to uncrustify.
-These may be, for example \"-l C\" to specify the C language, \"-l CPP\" to specify C++ etc."
+  These may be, for example \"-l C\" to specify the C language,
+  \"-l CPP\" to specify C++ etc."
  :type 'string
  :group 'uncrustify)
 
 (defcustom uncrustify-uncrustify-on-save nil
  "Whether to uncrustify the buffer when file is saved.\n
-When non-nil, uncrustify will be run when a cc-mode buffer is saved.
-The configuration file will be read from the specification given by
-`uncrustify-uncrustify-cfg-file'. The cursor will attempt to (re)locate the current
-line, which might change as a result of the uncrustification."
+  When non-nil, uncrustify will be run when a cc-mode buffer is saved.
+  The configuration file will be read from the specification given by
+  `uncrustify-uncrustify-cfg-file'."
  :type '(choice (const :tag "off" nil)
                 (const :tag "on" t))
  :group 'uncrustify)
@@ -77,8 +77,8 @@ line, which might change as a result of the uncrustification."
 
 (defvar uncrustify-uncrustify-path nil
  "The uncrustify executable in path.\n
-When non-nil return value is the path to local uncrustify.\n
-:SEE (URL `http://uncrustify.sourceforge.net/index.php')")
+  When non-nil return value is the path to local uncrustify.\n
+  :SEE (URL `http://uncrustify.sourceforge.net/index.php')")
 ;;
 (unless (bound-and-true-p uncrustify-uncrustify-path)
  (let ((uncrustify-path
@@ -93,7 +93,8 @@ When non-nil return value is the path to local uncrustify.\n
 (defun uncrustify-impl (point-a point-b)
  ""
  (if uncrustify-uncrustify-path
-     (let* ((cmd (format "%s -c %s %s" uncrustify-uncrustify-path uncrustify-uncrustify-cfg-file uncrustify-args)))
+     (let* ((cmd (format "%s -c %s %s" uncrustify-uncrustify-path
+                         uncrustify-uncrustify-cfg-file uncrustify-args)))
        (shell-command-on-region point-a point-b cmd t t
                                 null-device))
    (message "Uncrustify not found in path - no change"))
@@ -104,17 +105,17 @@ When non-nil return value is the path to local uncrustify.\n
 
 (defun uncrustify ()
  "Uncrustify the marked region.
-The configuration file will be read from the specification given by
-`uncrustify-uncrustify-cfg-file'."
+  The configuration file will be read from the specification given by
+  `uncrustify-uncrustify-cfg-file'."
  (interactive)
  (save-excursion
    (uncrustify-impl (region-beginning) (region-end))))
 
 (defun uncrustify-buffer ()
  "Uncrustify the entire buffer.
-The configuration file will be read from the specification given by
-`uncrustify-uncrustify-cfg-file'. The cursor will attempt to (re)locate the current
-line, which might change as a result of the uncrustification."
+  The configuration file will be read from the specification given by
+  `uncrustify-uncrustify-cfg-file'. The cursor will attempt to (re)locate
+  the current line, which might change as a result of the uncrustification."
  (interactive)
  (let* ((uncrustify-current-line (line-number-at-pos)))
    (save-excursion
@@ -131,7 +132,8 @@ line, which might change as a result of the uncrustification."
 (add-hook 'c-mode-common-hook
          '(lambda()
             (make-local-variable 'write-contents-hooks)
-            (add-hook 'write-contents-hooks 'uncrustify-uncrustify-buffer-on-save)))
+            (add-hook 'write-contents-hooks
+                      'uncrustify-uncrustify-buffer-on-save)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (provide 'uncrustify)
