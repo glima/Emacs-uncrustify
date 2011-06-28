@@ -1,2 +1,2 @@
-Simple Emacs function calling uncrustify on a buffer region.
+Simple Emacs functions calling uncrustify on a buffer (region).
 Still needs love, has just been born.

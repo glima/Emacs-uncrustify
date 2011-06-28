@@ -26,17 +26,19 @@
 
 ;;; Commentary:
 
-;; Quick program. Use uncrustify to check buffer for improper
-;; indentation. It will grab indentation configuration from
-;; the configured uncrustify specification file.
+;; A simple Emacs interface for the uncrustify source code beautifier.
+;; Checks your buffers for improper code indentation. It will follow
+;; the indentation rules found in the specified configuration file.
 
-;;; Usage:
-
-;; M-x uncrustify-buffer to apply effects of code beautifier program
-;; "uncrustify" to whole buffer.
+;; Load this file and run:
 ;;
-;; M-x uncrustify-region to apply effects of code beautifer program
-;; "uncrustify" to selected region only.
+;;  M-x uncrustify-buffer
+;;
+;; to indent the whole buffer or select a region and run
+;;
+;;  M-x uncrustify
+;;
+;; to indent just the region.
 ;;
 ;; See also Customisation group "uncrustify"
 
