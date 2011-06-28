@@ -100,7 +100,7 @@ When non-nil return value is the path to local uncrustify.\n
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; public functions
 
-(defun uncrustify-region ()
+(defun uncrustify ()
  "Uncrustify the marked region.
 The configuration file will be read from the specification given by
 `uncrustify-uncrustify-cfg-file'."
