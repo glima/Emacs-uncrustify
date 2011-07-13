@@ -81,7 +81,7 @@
   :group 'uncrustify)
 
 (defcustom uncrustify-finish-hooks nil
-  "*ooks called after running uncrustify."
+  "Hooks called after running uncrustify."
   :type 'hook
   :group 'uncrustify)
 
@@ -138,7 +138,8 @@
 
 ;; If uncrustify-uncrustify-on-save is non nil, uncrustify the whole buffer.
 (defun uncrustify-uncrustify-buffer-on-save ()
-  (if uncrustify-uncrustify-on-save (uncrustify-buffer))
+  (if uncrustify-uncrustify-on-save (uncrustify-buffer)
+    (not-modified))
   nil)
 
 ;; add a c-mode-common-hook that uncrustifies the buffer when it is saved,
