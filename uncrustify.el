@@ -51,29 +51,29 @@
 ;; Custom
 
 (defgroup uncrustify nil
- "Customization group for uncrustify"
- :group 'uncrustify)
+  "Customization group for uncrustify"
+  :group 'uncrustify)
 
 (defcustom uncrustify-uncrustify-cfg-file "~/.uncrustify.cfg"
- "Path to uncrustify configuration file.\n"
- :type 'string
- :group 'uncrustify)
+  "Path to uncrustify configuration file.\n"
+  :type 'string
+  :group 'uncrustify)
 
 (defcustom uncrustify-args ""
- "Additional arguments to pass to uncrustify.
+  "Additional arguments to pass to uncrustify.
   These may be, for example \"-l C\" to specify the C language,
   \"-l CPP\" to specify C++ etc."
- :type 'string
- :group 'uncrustify)
+  :type 'string
+  :group 'uncrustify)
 
 (defcustom uncrustify-uncrustify-on-save nil
- "Whether to uncrustify the buffer when file is saved.\n
+  "Whether to uncrustify the buffer when file is saved.\n
   When non-nil, uncrustify will be run when a cc-mode buffer is saved.
   The configuration file will be read from the specification given by
   `uncrustify-uncrustify-cfg-file'."
- :type '(choice (const :tag "off" nil)
-                (const :tag "on" t))
- :group 'uncrustify)
+  :type '(choice (const :tag "off" nil)
+                 (const :tag "on" t))
+  :group 'uncrustify)
 
 (defcustom uncrustify-init-hooks nil
   "Hooks called prior to running uncrustify."
@@ -89,16 +89,15 @@
 ;; vars
 
 (defvar uncrustify-uncrustify-path nil
- "The uncrustify executable in path.\n
+  "The uncrustify executable in path.\n
   When non-nil return value is the path to local uncrustify.\n
   :SEE (URL `http://uncrustify.sourceforge.net/index.php')")
-;;
 (unless (bound-and-true-p uncrustify-uncrustify-path)
- (let ((uncrustify-path
-        (or (executable-find "uncrustify")
-            (executable-find "uncrustify.exe"))))
-   (when uncrustify-path (setq uncrustify-uncrustify-path
-                               uncrustify-path))))
+  (let ((uncrustify-path
+         (or (executable-find "uncrustify")
+             (executable-find "uncrustify.exe"))))
+    (when uncrustify-path (setq uncrustify-uncrustify-path
+                                uncrustify-path))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; private impl fns
@@ -119,36 +118,36 @@
 ;; public functions
 
 (defun uncrustify ()
- "Uncrustify the marked region.
+  "Uncrustify the marked region.
   The configuration file will be read from the specification given by
   `uncrustify-uncrustify-cfg-file'."
- (interactive)
- (save-excursion
-   (uncrustify-impl (region-beginning) (region-end))))
+  (interactive)
+  (save-excursion
+    (uncrustify-impl (region-beginning) (region-end))))
 
 (defun uncrustify-buffer ()
- "Uncrustify the entire buffer.
+  "Uncrustify the entire buffer.
   The configuration file will be read from the specification given by
   `uncrustify-uncrustify-cfg-file'. The cursor will attempt to (re)locate
   the current line, which might change as a result of the uncrustification."
- (interactive)
- (let* ((uncrustify-current-line (line-number-at-pos)))
-   (save-excursion
-     (uncrustify-impl (point-min) (point-max)))
-   (goto-char (point-min)) (forward-line (1- uncrustify-current-line))))
+  (interactive)
+  (let* ((uncrustify-current-line (line-number-at-pos)))
+    (save-excursion
+      (uncrustify-impl (point-min) (point-max)))
+    (goto-char (point-min)) (forward-line (1- uncrustify-current-line))))
 
 ;; If uncrustify-uncrustify-on-save is non nil, uncrustify the whole buffer.
 (defun uncrustify-uncrustify-buffer-on-save ()
- (if uncrustify-uncrustify-on-save (uncrustify-buffer))
- nil)
+  (if uncrustify-uncrustify-on-save (uncrustify-buffer))
+  nil)
 
 ;; add a c-mode-common-hook that uncrustifies the buffer when it is saved,
 ;; iff uncrustify-uncrustify-on-save is non nil.
 (add-hook 'c-mode-common-hook
-         '(lambda()
-            (make-local-variable 'write-contents-hooks)
-            (add-hook 'write-contents-hooks
-                      'uncrustify-uncrustify-buffer-on-save)))
+          '(lambda()
+             (make-local-variable 'write-contents-hooks)
+             (add-hook 'write-contents-hooks
+                       'uncrustify-uncrustify-buffer-on-save)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (provide 'uncrustify)
