@@ -5,7 +5,10 @@
 ;; Author: Gustavo Lima Chaves <com dot gmail at limachaves, in reversed order>
 ;; Modified: Gordon Read <com dot f2s at gtread, in reversed order>
 ;;           Added Customisation vars, uncrustify-region, uncrustify-buffer and
-;;           uncrustify-on-save hook (10/Jun/2011)
+;;           uncrustify-on-save hook (15/06/2011)
+;; Modified: Gordon read <com dot f2s at gtread, in reversed order>
+;;           Added uncrustify-init-hooks and uncrustify-finish-hooks
+;;           (12/07/2011)
 ;; Website: TODO
 ;; Keywords: uncrustify
 
@@ -72,6 +75,16 @@
                 (const :tag "on" t))
  :group 'uncrustify)
 
+(defcustom uncrustify-init-hooks nil
+  "Hooks called prior to running uncrustify."
+  :type 'hook
+  :group 'uncrustify)
+
+(defcustom uncrustify-finish-hooks nil
+  "*ooks called after running uncrustify."
+  :type 'hook
+  :group 'uncrustify)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; vars
 
@@ -91,14 +104,16 @@
 ;; private impl fns
 
 (defun uncrustify-impl (point-a point-b)
- ""
- (if uncrustify-uncrustify-path
-     (let* ((cmd (format "%s -c %s %s" uncrustify-uncrustify-path
-                         uncrustify-uncrustify-cfg-file uncrustify-args)))
-       (shell-command-on-region point-a point-b cmd t t
-                                null-device))
-   (message "Uncrustify not found in path - no change"))
- nil)
+  ""
+  (run-hooks 'uncrustify-init-hooks)
+  (if uncrustify-uncrustify-path
+      (let* ((cmd (format "%s -c %s %s" uncrustify-uncrustify-path
+                          uncrustify-uncrustify-cfg-file uncrustify-args)))
+        (shell-command-on-region point-a point-b cmd t t
+                                 null-device))
+    (message "Uncrustify not found in path - no change"))
+  (run-hooks 'uncrustify-finish-hooks)
+  nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; public functions
